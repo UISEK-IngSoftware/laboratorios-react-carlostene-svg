@@ -1,7 +1,11 @@
 import { Container, Grid } from '@mui/material'
 import Header from './components/Header'
+import PokemonList from './pages/PokemonList'
+import PokemonForm from './pages/PokemonForm'
 import './App.css'
-import PokemonList from './components/PokemonList'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+
 
 
 
@@ -10,9 +14,15 @@ function App() {
 
   return (
     <>
-      <Header/>
+      <Header />
       <Container>
-        <PokemonList/>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<PokemonList/>} />
+            <Route path='/add-pokemon' element={<PokemonForm/>} />
+
+          </Routes>
+        </BrowserRouter>
       </Container>
 
     </>
