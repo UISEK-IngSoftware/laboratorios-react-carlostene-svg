@@ -17,7 +17,7 @@ export default function PokemonCard({ pokemon }) {
                     {pokemon.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Tipo: {pokemon.type}
+                    Tipo: {pokemon.tipo}
                 </Typography>
             </CardContent>
             <CardActions>
