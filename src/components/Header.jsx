@@ -24,14 +24,14 @@ export default function Header(){
                     </div>
                 </Toolbar>
                 <Toolbar>
-                    <Button color="inherit" href="/">Inicio</Button>
+                    <Button color="inherit" href="/">Pokemons</Button>
+                    <Button color="inherit" href="/entrenadores">Entrenadores</Button>
                     {isLoggedIn && (
                     <>
-                        <Button color="inherit" href="/add-pokemon">Agregar Pokemon</Button>
                         <Button color="inherit" onClick={handleLogout}> Cerrar Sesión </Button>
                     </>
                     )}
-                    {!isLoggedIn && <Button color="inherit" href="/login">Iniciar sesión</Button>}
+                    {!isLoggedIn && <Button color="inherit" href="/login">Iniciar sesión</Button> }
                     
                 </Toolbar>
             </AppBar>

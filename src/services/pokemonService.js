@@ -21,6 +21,7 @@ export async function fetchPokemons() {
     return response.data;
 }
 
+
 /**
  * Convertir un archivo a Base64
  * @param {} file 
@@ -58,4 +59,34 @@ export async function addPokemon(pokemonData) {
     );
     return response.data;
 
+}
+
+// editar Pokemon
+export async function editPokemon(pokemonId, pokemonData) {
+  let payload = {
+    name: pokemonData.name,
+    tipo: pokemonData.tipo,
+    weight: pokemonData.weight,
+    height: pokemonData.height,
+  };
+
+  if (pokemonData.picture instanceof File) {
+    const pictureBase64 = await fileToBase64(pokemonData.picture);
+    payload.picture = pictureBase64;
+  }
+  console.log("Payload edit:", payload);
+
+  const response = await axios.put(
+    `${API_BASE_URL}/pokemons/${pokemonId}/`,
+    payload
+  );
+  return response.data;
+}
+
+//eliminar Pokemon  
+export async function deletePokemon(pokemonId) {
+    const response = await axios.delete(
+        `${API_BASE_URL}/pokemons/${pokemonId}/`
+    );
+    return response.data;
 }

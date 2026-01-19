@@ -26,6 +26,8 @@ export async function login(username, password) {
             }
         }
     );
+    localStorage.setItem("access_token", response.data.access_token);
+
     return response.data
 }
 
