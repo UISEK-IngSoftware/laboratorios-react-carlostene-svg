@@ -4,20 +4,29 @@ import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { fetchTrainers, deleteTrainer } from "../services/trainerService";
 import TrainerCard from "../components/TrainerCard";
+import Spinner from "../components/Spinner";
 
 export default function TrainerList() {
   const isLoggedIn = localStorage.getItem("access_token") !== null;
   const navigate = useNavigate();
   const [trainers, setTrainers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetchTrainers()
       .then((data) => setTrainers(data))
       .catch((error) => {
         alert("Error obteniendo entrenadores");
         console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
+  if (loading) {
+    return <Spinner />;
+  }
 
   const handleDelete = async (id) => {
     try {

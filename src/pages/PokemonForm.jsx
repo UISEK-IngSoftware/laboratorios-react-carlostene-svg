@@ -2,10 +2,12 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addPokemon, editPokemon, fetchPokemons } from "../services/PokemonService";
+import Spinner from "../components/Spinner";
 
 export default function PokemonForm() {
     const navigate = useNavigate();
     const { id } = useParams(); 
+    const [loading, setLoading] = useState(false);
     const [pokemonData, setPokemonData] = useState({
         name: '',
         tipo: '',
@@ -45,6 +47,7 @@ export default function PokemonForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             if (id) {
                 await editPokemon(id, pokemonData); 
@@ -57,9 +60,14 @@ export default function PokemonForm() {
         } catch (error) {
             console.error("Error al guardar el pokemon:", error);
             alert("Error al guardar el pokemon");
+        }finally {
+            setLoading(false);
         }
     };
 
+    if (loading) {
+        return <Spinner />;
+    }
     return (
         <>
             <Typography variant="h4" gutterBottom>

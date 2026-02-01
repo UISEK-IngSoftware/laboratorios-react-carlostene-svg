@@ -2,19 +2,26 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Typography, Card, CardContent, CardMedia } from "@mui/material";
 import { fetchTrainers } from "../services/trainerService";
+import Spinner from "../components/Spinner";
 
 const MEDIA_URL = import.meta.env.VITE_MEDIA_URL;
 
 export default function TrainerDetail() {
   const { id } = useParams();
   const [trainer, setTrainer] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetchTrainers().then((data) => {
       const found = data.find((t) => t.id === parseInt(id));
       setTrainer(found);
+      setLoading(false);
     });
   }, [id]);
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (!trainer) {
     return <Typography>Cargando entrenador...</Typography>;

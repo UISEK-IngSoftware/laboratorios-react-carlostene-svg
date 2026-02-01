@@ -2,19 +2,26 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Typography, Card, CardContent, CardMedia } from "@mui/material";
 import { fetchPokemons } from "../services/PokemonService";
+import Spinner from "../components/Spinner";
 
 const MEDIA_URL = import.meta.env.VITE_MEDIA_URL;
 
 export default function PokemonDetail() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetchPokemons().then((data) => {
       const found = data.find((p) => p.id === parseInt(id));
       setPokemon(found);
+      setLoading(false);
     });
   }, [id]);
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (!pokemon) {
     return <Typography>Cargando Pokémon...</Typography>;

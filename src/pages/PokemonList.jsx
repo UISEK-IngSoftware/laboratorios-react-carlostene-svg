@@ -1,36 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Grid, Stack,Button } from '@mui/material';
+import { Grid, Stack, Button } from '@mui/material';
 import PokemonCard from '../components/PokemonCard'
 import { fetchPokemons, deletePokemon } from '../services/PokemonService';
 import { useNavigate } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
+import Spinner from '../components/Spinner';
 
 export default function PokemonList() {
   const isLoggedIn = localStorage.getItem('access_token') !== null;
   const navigate = useNavigate();
-
   const [pokemons, setPokemons] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetchPokemons().then((data) => {
       setPokemons(data);
     }).catch((error) => {
       alert("Error obteniendo los pokemons");
       console.error("Error obteniendo los pokemons", error);
-    });
+    })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+  if (loading) {
+    return <Spinner />;
+  }
 
   const handleDelete = async (id) => {
     try {
       await deletePokemon(id);
       setPokemons(pokemons.filter((p) => p.id !== id));
-      alert("Pokémon eliminado exitosamente"); 
+      alert("Pokémon eliminado exitosamente");
     } catch (error) {
       console.error("Error eliminando el pokemon:", error.response || error);
       alert("Error eliminando el pokemon");
     }
   };
-
 
   return (
     <>
@@ -42,7 +49,7 @@ export default function PokemonList() {
             color="success"
             startIcon={<Add />}
             onClick={() => navigate("/add-pokemon")}
-            sx={{ borderRadius: "8px" }} 
+            sx={{ borderRadius: "8px" }}
           >
             Agregar Pokémon
           </Button>

@@ -2,9 +2,11 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { addTrainer, editTrainer, fetchTrainers } from "../services/trainerService";
+import Spinner from "../components/Spinner";
 
 export default function TrainerForm() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { id } = useParams(); 
 
   const [trainerData, setTrainerData] = useState({
@@ -44,6 +46,7 @@ export default function TrainerForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (id) {
         await editTrainer(id, trainerData); 
@@ -56,8 +59,14 @@ export default function TrainerForm() {
     } catch (error) {
       console.error("Error al guardar el entrenador:", error);
       alert("Error al guardar el entrenador");
+    }finally {
+        setLoading(false);
     }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
